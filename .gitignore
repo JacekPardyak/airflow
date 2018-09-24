@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 *.csv
-secure.R
+*.R
+*.Rproj
