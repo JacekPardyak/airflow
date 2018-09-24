@@ -1,0 +1,20 @@
+# rename this file name to 'secure.R'
+# and modify wisely 
+####################################
+require(rcrypt)
+files <- list.files("./files/", recursive = TRUE, full.names = TRUE)
+filesEncry <- list.files("./files/",  recursive = TRUE, pattern = ".gpg", full.names = TRUE)
+filesPlain <- setdiff(files, filesEncry)
+####################################
+# encrypt plain files in 'files' 
+for(file in filesPlain){
+  encrypt(input = file, passphrase = NULL, verbosity = 3)
+  file.remove(file)  
+}
+####################################
+# decrypt encrypted files in 'files' 
+for(file in filesEncry){
+  decrypt(input = file, passphrase = NULL, verbosity = 3)
+  file.remove(file)
+}
+####################################

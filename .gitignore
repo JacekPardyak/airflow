@@ -1,3 +1,4 @@
+# Ignore these files:
 .Rproj.user
 .Rhistory
 .RData
@@ -5,3 +6,5 @@
 *.csv
 *.R
 *.Rproj
+# But not these files...
+# !.gitignore
