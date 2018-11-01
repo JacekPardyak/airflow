@@ -8,3 +8,4 @@
 *.Rproj
 # But not these files...
 # !.gitignore
+.httr-oauth
