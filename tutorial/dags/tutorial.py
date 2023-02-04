@@ -4,8 +4,11 @@ from textwrap import dedent
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
 
+from custom_operator.sftp_operator import MakeOperator
+
 # Operators; we need this to operate!
 from airflow.operators.bash import BashOperator
+from airflow.operators.python_operator import PythonOperator
 with DAG(
     "tutorial",
     # These args will get passed on to each operator
@@ -78,5 +81,27 @@ with DAG(
         depends_on_past=False,
         bash_command=templated_command,
     )
+    
+    def _install_r():
+        import os
+        cmd = "R --version"
+        cmd = """/bin/Rscript -e 'rmarkdown::render("/data/share/airflow/dags/project/Rmd/file.Rmd",params=list(master="yarn-client"),run_pandoc=F)' """
+        #cmd = "sudo apt -y install r-base"
+        
+        returned_value = os.system(cmd)
+        print(returned_value)
 
-    t1 >> [t2, t3]
+    install_r = PythonOperator(
+        task_id='install_r', 
+        python_callable=_install_r,
+    )
+    
+    run_r = BashOperator(
+    task_id='A_get_users',
+    #bash_command=f'Rscript /opt/airflow/dags/A_task.R',
+    bash_command=f'sudo apt-get install -y r-base',
+    )
+
+    make_task = MakeOperator(task_id="make-task", path="/opt/airflow/dags/in_file.txt", ssh_conn_id = "sftp_conn_id")
+    t1 >> [t2, t3] >> make_task 
+    t1 >> install_r >> run_r
