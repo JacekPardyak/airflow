@@ -3,4 +3,5 @@
 # first run
 compose up airflow-init
 
-#
+# subsequent runs
+docker compose up

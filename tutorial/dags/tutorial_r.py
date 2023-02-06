@@ -10,7 +10,7 @@ from custom_operator.sftp_operator import MakeOperator
 from airflow.operators.bash import BashOperator
 from airflow.operators.python_operator import PythonOperator
 with DAG(
-    "tutorial",
+    "tutorial_r",
     # These args will get passed on to each operator
     # You can override them on a per-task basis during operator initialization
     default_args={
