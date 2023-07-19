@@ -1,0 +1,21 @@
+from sys import path
+path.append('\\Program Files\\Microsoft.NET\\ADOMD.NET\\160')
+conn_str = open("conn_str.txt", "r").readline()
+from pyadomd import Pyadomd
+import pyarrow
+#from prophet import Prophet # OSError: [WinError 1260] This program is blocked by group policy
+import pandas as pd
+with Pyadomd(conn_str) as conn:
+  print(conn.state)
+
+# ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+
+query = "SELECT * FROM $SYSTEM.DBSCHEMA_CATALOGS;"
+with Pyadomd(conn_str) as conn:
+    with conn.cursor().execute(query) as cur:
+        df = pd.DataFrame(cur.fetchone(),
+        columns=[i.name for i in cur.description])
+df
