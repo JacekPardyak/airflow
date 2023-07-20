@@ -24,7 +24,10 @@ ui <- fluidPage(
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            selectizeInput("file",
+                           "Pick a file:",
+                           choices = c("data_1.csv", "data_2.csv"))
         ),
 
         # Show a plot of the generated distribution
@@ -49,7 +52,7 @@ server <- function(input, output) {
              main = 'Histogram of waiting times')
     })
     output$table <- renderTable({
-      df <- get_data(input$bins)
+      df <- get_data(input$file)
       print(df)
     })
     
