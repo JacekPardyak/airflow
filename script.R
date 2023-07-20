@@ -1,0 +1,6 @@
+#library(arrow)
+#df <- read_feather('data.feather')
+library(reticulate)
+source_python('script.py')
+df <- get_data(5)
+print(df)
