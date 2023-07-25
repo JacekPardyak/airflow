@@ -1,24 +1,16 @@
-#library(arrow)
-#df <- read_feather('data.feather')
-library(reticulate)
-py_install("plotnine", pip=TRUE)
-py_install("shiny", pip=TRUE)
-source_python('script.py')
-df <- get_data(5)
-print(df)
-
-# ---- 
-# prepare data
+source("lib.R")
 library(tidyverse)
-tribble(
-  ~x, ~y,  ~z,
-  "a", 2,  3.6,
-  "b", 1,  8.5
-) %>% write_csv("data_1.csv")
 
-tribble(
-  ~x, ~y,  ~z, ~u,
-  "a", 2,  3.6, "i",
-  "b", 1,  8.5, "j",
-  "c", 1,  8.5, "k"
-) %>% write_csv("data_2.csv")
+qry <- Query() %>%
+  cube("[Analysis Services Tutorial]") %>%
+  columns(c("[Measures].[Internet Sales Count]", "[Measures].[Internet Sales-Sales Amount]")) %>%
+  rows(c("[Product].[Product Line].[Product Line].MEMBERS")) %>%
+  slicers(c("[Sales Territory].[Sales Territory Country].[Australia]"))
+query <- "SELECT {[Measures].[Internet Sales Count], [Measures].[Internet Sales-Sales Amount]} ON COLUMNS, {[Product].[Product Line].[Product Line].MEMBERS} ON ROWS FROM [Analysis Services Tutorial] WHERE [Sales Territory].[Sales Territory Country].[Australia]"
+show(qry) == query
+
+execute(qry)
+
+qry <- Query() %>%
+  mdx("SELECT {[Measures].[Internet Sales Count Like], [Measures].[InternetSales-Sales Amount]} ON COLUMNS, {[Product].[Product Line].[Product Line].MEMBERS} ON ROWS FROM [Analysis Services Tutorial] WHERE [Sales Territory].[Sales Territory Country].[Australia]")
+show(qry)
