@@ -151,10 +151,28 @@ setMethod(f="execute",
           signature="Query",
           definition=function(theObject)
           {
+'from sys import path
+path.append("/Program Files/Microsoft.NET/ADOMD.NET/160")
+from pyadomd import Pyadomd
+from pandas import DataFrame
+conn_str = "Provider=MSOLAP;Data Source=localhost;Catalog=AdventureWorks;"
+def get_data(x):
+  with Pyadomd(conn_str) as conn:
+    with conn.cursor().execute(x) as cur:
+      df = DataFrame(cur.fetchone(), columns=[i.name for i in cur.description])
+      # add fill na
+  return df'  %>% writeLines('lib.py')
+            # %>% sprintf(Sys.getenv("conn_str"))
+            if(nchar(theObject@mdx) == 0){
             fmt <- "SELECT {%s} ON COLUMNS, {%s} ON ROWS FROM %s WHERE %s"
             mdx <- sprintf(fmt, paste(theObject@columns, collapse = ", "), paste(theObject@rows, collapse = ", "), theObject@cube, paste(theObject@slicers, collapse = ", "))
+          }
+            else {
+              mdx = theObject@mdx  
+            }
             reticulate::source_python('lib.py')
             df <- get_data(mdx)
+            #unlink('lib.py')
             return(df)
           }
 )
