@@ -32,4 +32,4 @@ def get_data(x):
       # add fill na
   return df'  %>% writeLines('lib.py', useBytes = TRUE)
 
-?writeLines
+reticulate::source_python('lib.py')
