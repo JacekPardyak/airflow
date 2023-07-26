@@ -1,0 +1,131 @@
+
+
+
+
+
+setGeneric(name="columns",
+           def=function(theObject,position)
+           {
+             standardGeneric("columns")
+           }
+)
+
+setMethod(f="columns",
+          signature="Query",
+          definition=function(theObject,position)
+          {
+            theObject@columns <- position
+            validObject(theObject)
+            return(theObject)
+          }
+)    
+
+setGeneric(name="rows",
+           def=function(theObject,position)
+           {
+             standardGeneric("rows")
+           }
+)
+
+setMethod(f="rows",
+          signature="Query",
+          definition=function(theObject,position)
+          {
+            theObject@rows <- position
+            validObject(theObject)
+            return(theObject)
+          }
+)    
+
+setGeneric(name="slicers",
+           def=function(theObject,position)
+           {
+             standardGeneric("slicers")
+           }
+)
+
+setMethod(f="slicers",
+          signature="Query",
+          definition=function(theObject,position)
+          {
+            theObject@slicers <- position
+            validObject(theObject)
+            return(theObject)
+          }
+)    
+
+setGeneric(name="mdx",
+           def=function(theObject,position)
+           {
+             standardGeneric("mdx")
+           }
+)
+
+setMethod(f="mdx",
+          signature="Query",
+          definition=function(theObject,position)
+          {
+            theObject@mdx <- position
+            validObject(theObject)
+            return(theObject)
+          }
+)  
+
+setGeneric(name="explore",
+           def=function(theObject)
+           {
+             standardGeneric("explore")
+           }
+)
+
+setMethod(f="explore",
+          signature="Query",
+          definition=function(theObject)
+          {if(nchar(theObject@mdx) == 0){
+            fmt <- "SELECT {%s} ON COLUMNS, {%s} ON ROWS FROM %s WHERE %s"
+            mdx <- sprintf(fmt, paste(theObject@columns, collapse = ", "), paste(theObject@rows, collapse = ", "), theObject@cube, paste(theObject@slicers, collapse = ", "))
+          }
+            else {
+            mdx = theObject@mdx  
+            }
+            return(mdx)
+          }
+) 
+
+
+setGeneric(name="execute",
+           def=function(theObject)
+           {
+             standardGeneric("execute")
+           }
+)
+
+setMethod(f="execute",
+          signature="Query",
+          definition=function(theObject)
+          {
+'from sys import path
+path.append("/Program Files/Microsoft.NET/ADOMD.NET/160")
+from pyadomd import Pyadomd
+from pandas import DataFrame
+conn_str = "Provider=MSOLAP;Data Source=localhost;Catalog=AdventureWorks;"
+def get_data(x):
+  with Pyadomd(conn_str) as conn:
+    with conn.cursor().execute(x) as cur:
+      df = DataFrame(cur.fetchone(), columns=[i.name for i in cur.description])
+      # add fill na
+  return df'  %>% writeLines('lib.py')
+            # %>% sprintf(Sys.getenv("conn_str"))
+            if(nchar(theObject@mdx) == 0){
+            fmt <- "SELECT {%s} ON COLUMNS, {%s} ON ROWS FROM %s WHERE %s"
+            mdx <- sprintf(fmt, paste(theObject@columns, collapse = ", "), paste(theObject@rows, collapse = ", "), theObject@cube, paste(theObject@slicers, collapse = ", "))
+          }
+            else {
+              mdx = theObject@mdx  
+            }
+            reticulate::source_python('lib.py')
+            df <- get_data(mdx)
+            #unlink('lib.py')
+            return(df)
+          }
+)

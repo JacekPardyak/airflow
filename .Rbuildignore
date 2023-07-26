@@ -1,0 +1,6 @@
+^radomd\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+make.R
+lib.R
+script.R
