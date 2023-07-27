@@ -1,3 +1,4 @@
+#' @import methods
 #' @export
 Query <- setClass(
   # Set the name for the class
@@ -30,4 +31,21 @@ Query <- setClass(
     }
     return(TRUE)
   },
+)
+
+setGeneric(name="cube",
+           def=function(theObject,position)
+           {
+             standardGeneric("cube")
+           }
+)
+
+setMethod(f="cube",
+          signature="Query",
+          definition=function(theObject,position)
+          {
+            theObject@cube <- position
+            validObject(theObject)
+            return(theObject)
+          }
 )
