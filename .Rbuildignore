@@ -1,6 +1,6 @@
 ^radomd\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-make.R
-lib.R
+build.R
+setup_python.R
 script.R

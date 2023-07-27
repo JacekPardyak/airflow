@@ -1,35 +1,29 @@
-source("lib.R")
+library(radomd)
 library(tidyverse)
-Sys.setenv(adomd_path = "\\Program Files\\Microsoft.NET\\ADOMD.NET\\160", 
-           conn_str = 'Provider=MSOLAP;Data Source=localhost;Catalog=AdventureWorks;')
-Sys.getenv("adomd_path")
-Sys.getenv("conn_str")
 
-qry <- Query() %>%
-  cube("[Analysis Services Tutorial]") %>%
-  columns(c("[Measures].[Internet Sales Count]", "[Measures].[Internet Sales-Sales Amount]")) %>%
-  rows(c("[Product].[Product Line].[Product Line].MEMBERS")) %>%
-  slicers(c("[Sales Territory].[Sales Territory Country].[Australia]"))
-query <- "SELECT {[Measures].[Internet Sales Count], [Measures].[Internet Sales-Sales Amount]} ON COLUMNS, {[Product].[Product Line].[Product Line].MEMBERS} ON ROWS FROM [Analysis Services Tutorial] WHERE [Sales Territory].[Sales Territory Country].[Australia]"
-show(qry) == query
+# set environmental variables
+Sys.setenv(adomd_path = "/Program Files/Microsoft.NET/ADOMD.NET/160", 
+           conn_str = "Provider=MSOLAP.8;Integrated Security=SSPI;Persist Security Info=True;Initial Catalog=Finance Model;Data Source={local};MDX Compatibility=1;Safety Options=2;MDX Missing Member Mode=Error;Update Isolation Level=2")
 
-execute(qry)
+# check query to be send to SSAS
+Query() %>% explore()
 
-qry <- Query() %>%
-  mdx("SELECT {[Measures].[Internet Sales Count Like], [Measures].[InternetSales-Sales Amount]} ON COLUMNS, {[Product].[Product Line].[Product Line].MEMBERS} ON ROWS FROM [Analysis Services Tutorial] WHERE [Sales Territory].[Sales Territory Country].[Australia]")
-show(qry)
-execute(qry)
+# check if the connection can be opened
+Query() %>% execute()
 
-'from sys import path
-path.append("/Program Files/Microsoft.NET/ADOMD.NET/160")
-from pyadomd import Pyadomd
-from pandas import DataFrame
-conn_str = "Provider=MSOLAP;Data Source=localhost;Catalog=AdventureWorks;"
-def get_data(x):
-  with Pyadomd(conn_str) as conn:
-    with conn.cursor().execute(x) as cur:
-      df = DataFrame(cur.fetchone(), columns=[i.name for i in cur.description])
-      # add fill na
-  return df'  %>% writeLines('lib.py', useBytes = TRUE)
+# get data using MDX constructor
+df <- Query() %>%
+  cube("[model]") %>%
+  columns(c("[Measures].[FS-72 MRR New customer count]")) %>%
+  rows(c("[D_DATE_ACCRUED].[MONTH_NAME].&[January]",   
+         "[D_DATE_ACCRUED].[MONTH_NAME].&[February]" )) %>%
+  slicers(c("[D_ORGANIZATION].[Budget brand country].[Netherlands]")) 
+df %>% explore()
+df %>% execute()
 
-reticulate::source_python('lib.py')
+# get data using MDX directly
+df <- Query() %>%
+  mdx("EVALUATE D_ORGANIZATION") 
+df %>% explore()
+df %>% execute()
+
