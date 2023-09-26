@@ -1,0 +1,10 @@
+LICENSE
+README.rst
+setup.py
+inx/__init__.py
+inx/module_mpi4py_1.py
+inx.egg-info/PKG-INFO
+inx.egg-info/SOURCES.txt
+inx.egg-info/dependency_links.txt
+inx.egg-info/requires.txt
+inx.egg-info/top_level.txt
