@@ -42,3 +42,6 @@ def install():
     install_win()
   else :
     install_lin()
+
+def version():
+  return subprocess.check_output(["inkscape", "--version"]).decode()
