@@ -24,12 +24,12 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.79196829"
-     inkscape:cx="397.11186"
-     inkscape:cy="561.25985"
-     inkscape:window-width="2181"
-     inkscape:window-height="2104"
-     inkscape:window-x="5542"
-     inkscape:window-y="73"
+     inkscape:cx="505.07073"
+     inkscape:cy="583.98803"
+     inkscape:window-width="1904"
+     inkscape:window-height="1041"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -40,8 +40,8 @@
      id="layer1">
     <path
        style="fill:none;stroke:#000000;stroke-width:2.64583"
-       d="m 40.089989,153.34421 c 12.026995,-8.018 22.810115,-81.388101 54.121483,-80.514063 31.311368,0.874038 46.437568,78.175473 46.437568,78.175473"
+       d="m 21.047244,56.125987 c 20.650801,86.933993 43.152427,39.898494 73.979446,74.946563 11.19703,12.73021 11.98061,51.32874 70.6786,66.37065"
        id="path3"
-       sodipodi:nodetypes="czc" />
+       sodipodi:nodetypes="csc" />
   </g>
 </svg>
