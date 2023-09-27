@@ -1,11 +1,14 @@
+import validators
+import tempfile
+import requests
+import shutil
+import os
+import stat
+import subprocess
+from sys import platform
+  
 def run_lin(input, extension, options, ext):
-  import validators
-  import tempfile
-  import requests
-  import shutil
-  import os
-  import stat
-  import subprocess
+
   input_file_path = tempfile.NamedTemporaryFile(suffix='.svg').name
   if validators.url(input):
     r = requests.get(input, allow_redirects=True)
@@ -25,13 +28,6 @@ def run_lin(input, extension, options, ext):
   return output
 
 def run_win(input, extension, options, ext):
-  import validators
-  import tempfile
-  import requests
-  import shutil
-  import os
-  import stat
-  import subprocess
   input_file_path = tempfile.NamedTemporaryFile(suffix='.svg').name
   if validators.url(input):
     r = requests.get(input, allow_redirects=True)
@@ -51,7 +47,6 @@ def run_win(input, extension, options, ext):
   return output
 
 def run(input, extension, options, ext):
-  from sys import platform
   if platform == "win32":
     output = run_win(input, extension, options, ext)
   else :
