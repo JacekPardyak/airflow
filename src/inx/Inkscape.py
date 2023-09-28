@@ -42,3 +42,5 @@ def install():
 
 def version():
   return subprocess.check_output(["inkscape", "--version"]).decode()
+
+#exception when version returns error
