@@ -1,0 +1,65 @@
+---
+title: "Untitled"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{python}
+#!pip uninstall -y inx
+#!pip install --index-url https://test.pypi.org/simple/ --no-deps inx
+# pip install from command li
+```
+
+You can add options to executable code like this
+
+```{python}
+from inx import Inkscape
+Inkscape.version()
+```
+
+
+```{python}
+from IPython.display import SVG, display
+from inx import extension
+import shutil
+file = "nought_0000.svg"
+display(SVG(filename = file))
+for i in range(1,151):
+  output = extension.run(input = file,
+              extension = "jitternodes.py",
+              options = "--id=path1 --radiusx=1 --radiusy=1",
+              ext = ".svg")
+  path_out = f"nought_{str(i).zfill(4)}.svg"
+  shutil.copyfile(output, path_out)            
+  print(path_out)
+
+display(SVG(filename = output))
+```
+
+
+```{python}
+file = "cross_0000.svg"
+display(SVG(filename = file))
+for i in range(1,151):
+  output = extension.run(input = file,
+              extension = "jitternodes.py",
+              options = "--id=path1 --id=path2 --radiusx=1 --radiusy=1",
+              ext = ".svg")
+  path_out = f"cross_{str(i).zfill(4)}.svg"
+  shutil.copyfile(output, path_out)            
+  print(path_out)            
+
+display(SVG(filename = output))
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).

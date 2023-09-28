@@ -1,8 +1,10 @@
+import tempfile
+import os
+import stat
+import subprocess
+from sys import platform
+  
 def install_lin():
-  import tempfile
-  import os
-  import stat
-  import subprocess
   bat = tempfile.NamedTemporaryFile(suffix='.sh').name
   print(bat)
   text = '''#!/bin/bash
@@ -20,10 +22,6 @@ inkscape --version
   print("Inkscape has been installed")
 
 def install_win():
-  import tempfile
-  import os
-  import stat
-  import subprocess
   bat = tempfile.NamedTemporaryFile(suffix='.bat').name
   print(bat)
   text = '''@echo off
@@ -37,7 +35,6 @@ inkscape --version
   print("Inkscape has been installed")
 
 def install():
-  from sys import platform
   if platform == "win32":
     install_win()
   else :
