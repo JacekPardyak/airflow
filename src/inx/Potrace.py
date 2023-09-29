@@ -8,20 +8,19 @@ def install_lin():
   bat = tempfile.NamedTemporaryFile(suffix='.sh').name
   print(bat)
   text = '''#!/bin/bash
-sudo apt install -y software-properties-common > /dev/null 2>&1
-sudo apt update > /dev/null 2>&1
-sudo add-apt-repository -y ppa:inkscape.dev/stable > /dev/null 2>&1
-sudo apt install -y inkscape > /dev/null 2>&1
-inkscape --version
+sudo apt-get update > /dev/null 2>&1
+sudo apt-get install potrace > /dev/null 2>&1
+potrace --version
 '''
   with open(bat, mode='w') as f:
     f.write(text)
   st = os.stat(bat)
   os.chmod(bat, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
   subprocess.call([bat])
-  print("Inkscape has been installed")
+  print("Potrace has been installed")
 
 def install_win():
+  "TO DO"
   bat = tempfile.NamedTemporaryFile(suffix='.bat').name
   print(bat)
   text = '''@echo off
@@ -32,7 +31,7 @@ inkscape --version
   with open(bat, mode='w') as f:
     f.write(text)
   subprocess.call([bat])
-  print("Inkscape has been installed")
+  print("Potrace has been installed")
 
 def install():
   if platform == "win32":
@@ -42,7 +41,7 @@ def install():
 
 def version():
   try:
-    p = subprocess.check_output(["inkscape", "--version"]).decode().replace("\n", "")
+    p = subprocess.check_output(["potrace", "--version"]).decode().replace("\n", "")
   except:
-    p = "Inkscape is not installed. Try Inkscape.install()"
+    p = "Potrace is not installed. Try Potrace.install()"
   return p
